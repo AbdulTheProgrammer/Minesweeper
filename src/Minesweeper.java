@@ -23,12 +23,13 @@ public class Minesweeper extends JApplet implements ActionListener
 	int dim ,numofbombs;
 	boolean win;
 
-	public void init ()
+	public void init () // setup intial game conditions
 	{
 		numofbombs = 40;
 		move = 0;
 		dim = 16; 
 		resize (600, 600);
+		//set up button array and general game layout
 		Board = new JButton [dim] [dim];
 		setLayout(new BorderLayout());
 		gamestate = new JLabel("Game In Progress...");
@@ -58,6 +59,7 @@ public class Minesweeper extends JApplet implements ActionListener
 		add(game,BorderLayout.CENTER);
 		add(actionbar, BorderLayout.NORTH);
 		add(bottombar,BorderLayout.SOUTH);
+		//import game images
 		flag_original= getImage (getCodeBase (), "flag.png");
 		flag_scaled= flag_original.getScaledInstance( 23, 23,  java.awt.Image.SCALE_SMOOTH ) ;
 		flagIcon = new ImageIcon(flag_scaled);
@@ -70,7 +72,7 @@ public class Minesweeper extends JApplet implements ActionListener
 		UIManager.getDefaults().put("Button.disabledText", Color.magenta);
 
 
-		for (int i = 0 ; i < dim ; i++)
+		for (int i = 0 ; i < dim ; i++) 
 		{
 			for (int j = 0 ; j < dim; j++)
 			{
@@ -80,7 +82,7 @@ public class Minesweeper extends JApplet implements ActionListener
 				}
 		}
 		
-		for (int i = 0 ; i < dim ; i++)
+		for (int i = 0 ; i < dim ; i++) // add buttons to screen
 		{
 			for (int j = 0 ; j < dim ; j++)
 			{
@@ -135,14 +137,14 @@ public class Minesweeper extends JApplet implements ActionListener
 	}
 
 
-	public void paint (Graphics g)
+	public void paint (Graphics g) // output to screen method
 	{
 		super.paint (g);
 
 	}
 
 
-	public void actionPerformed (ActionEvent ae)
+	public void actionPerformed (ActionEvent ae) // method to manage user button presses
 	{
 		Object source = ae.getSource ();
 		move++;
@@ -154,7 +156,7 @@ public class Minesweeper extends JApplet implements ActionListener
 					firstMoveSetUp(i,j);
 				}
 
-				if (source == Board [i] [j] && Board [i] [j].getName ().equals("Mine"))
+				if (source == Board [i] [j] && Board [i] [j].getName ().equals("Mine")) // condition for when user clicks on a mine
 				{
 					Board [i] [j].setEnabled (false);
 					Board [i] [j].setDisabledIcon (explodeIcon);
@@ -182,6 +184,7 @@ public class Minesweeper extends JApplet implements ActionListener
 				}
 			}
 		}
+		//handling the board layout according the difficulty i.e. higher difficulty, more mines
 		if (source == easy) { 
 			for (int i = 0 ; i < dim ; i++)
 			{
@@ -221,7 +224,7 @@ public class Minesweeper extends JApplet implements ActionListener
 	}
 
 
-	private void revealEmptyButtons(int i, int j) {
+	private void revealEmptyButtons(int i, int j) { // recursive method for revealing all the buttons on the board that aren't mines when user clicks an empty square
 		Board[i][j].setEnabled (false);
 		Board[i][j].setBackground (Color.DARK_GRAY);
 		Board[i][j].setText(Board[i][j].getName());
@@ -256,7 +259,7 @@ public class Minesweeper extends JApplet implements ActionListener
 		}
 
 	}
-	public void revealAll() { 
+	public void revealAll() { //activated when the user loses or wins game
 		for (int i = 0 ; i < dim ; i++)
 		{
 			for (int j = 0 ; j < dim ; j++)
@@ -285,7 +288,7 @@ public class Minesweeper extends JApplet implements ActionListener
 		bottombar.add(gamestate);
 		bottombar.validate();
 	}
-	public void firstMoveSetUp(int l, int m) { 
+	public void firstMoveSetUp(int l, int m) { // method to address the first move of the player. Note the first button the user clicks will always be an empty square, NEVER a bomb
 		for (int i = 0 ; i < numofbombs ; i++)
 		{
 			int k = (int) (Math.random () * dim);
@@ -334,7 +337,7 @@ public class Minesweeper extends JApplet implements ActionListener
 			}
 		}
 	}
-	public void newGame(int dim, int numofbombs) {
+	public void newGame(int dim, int numofbombs) { // method to set-up the board according to difficulty 
 		
 		this.dim = dim;
 		this.numofbombs = numofbombs;
@@ -404,7 +407,7 @@ public class Minesweeper extends JApplet implements ActionListener
 		bottombar.validate();
 		
 	}
-	public void scaleImages (int scalevalue1, int scalevalue2, Color mycolor) {
+	public void scaleImages (int scalevalue1, int scalevalue2, Color mycolor) { // method the scale the images on the board according the size of the button
 	flag_scaled= flag_original.getScaledInstance( scalevalue1, scalevalue1,  java.awt.Image.SCALE_SMOOTH ) ;
 	flagIcon = new ImageIcon(flag_scaled);
 	mine_scaled= mine_original.getScaledInstance( scalevalue1, scalevalue1,  java.awt.Image.SCALE_SMOOTH ) ;
@@ -415,7 +418,7 @@ public class Minesweeper extends JApplet implements ActionListener
 	}
 	public static void main( String[] args )
 	{
-		new Acme.MainFrame( new Minesweeper(), args, 400, 400 );
+		new Acme.MainFrame( new Minesweeper(), args, 400, 400 ); // this is activated in order to run the applet as a application 
 	}
 
 }
